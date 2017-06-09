@@ -100,7 +100,8 @@ public class PersonRecordBatchConfiguration {
                         //TODO: Would need to pass arguments here or evaluate the step successes inside the tasklet?
                         .tasklet(persistPersonTasklet)
                         .build()
-                ).on("*").fail()
+                ).on("*").end("ROLLEDBACK")
+                .on("FAILURE").end("FAILEDROLLBACK")
                 .build();
     }
 
@@ -122,8 +123,8 @@ public class PersonRecordBatchConfiguration {
                         //TODO: Would need to pass arguments here or evaluate the step successes inside the tasklet?
                         .tasklet(createPersonRecordTasklet)
                         .build()
-                ).on("*").to(persistPersonFlow())
-                .on("FAILURE").to(persistPersonFlow())
+                ).on("*").to(rollbackPersonFlow())
+                .on("FAILURE").end("FAILEDROLLBACK")
                 .build();
     }
 
