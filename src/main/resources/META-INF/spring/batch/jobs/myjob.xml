@@ -26,35 +26,35 @@
 
     <bean id="asyncTaskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
 
-    <batch:job id="createPersonRecordJob" >
-        <batch:step id="personReaderStep" next="persistPersonStep">
-            <batch:tasklet ref="personRecordReaderTasklet"/>
-            <batch:listeners>
-                <batch:listener ref="personRecordPromotionListener"/>
-            </batch:listeners>
-        </batch:step>
-        <batch:step id="persistPersonStep" next="createPersonRecordStep">
-            <batch:tasklet ref="persistPersonTasklet"/>
-        </batch:step>
-        <batch:step id="createPersonRecordStep" next="postRecordCreatedSplit">
-            <batch:tasklet ref="createPersonRecordTasklet"/>
-        </batch:step>
-        <batch:split id="postRecordCreatedSplit" task-executor="asyncTaskExecutor">
-            <batch:flow>
-                <batch:step id="updateSuspenseStep">
-                    <batch:tasklet ref="updateSuspenseTasklet"/>
-                </batch:step>
-            </batch:flow>
-            <batch:flow>
-                <batch:step id="addPersonFlashStep">
-                    <batch:tasklet ref="addPersonFlashTasklet"/>
-                </batch:step>
-            </batch:flow>
-        </batch:split>
-        <batch:listeners>
-            <batch:listener ref="personRecordPromotionListener"/>
-        </batch:listeners>
-    </batch:job>
+    <!--<batch:job id="createPersonRecordJob" >-->
+        <!--<batch:step id="personReaderStep" next="persistPersonStep">-->
+            <!--<batch:tasklet ref="personRecordReaderTasklet"/>-->
+            <!--<batch:listeners>-->
+                <!--<batch:listener ref="personRecordPromotionListener"/>-->
+            <!--</batch:listeners>-->
+        <!--</batch:step>-->
+        <!--<batch:step id="persistPersonStep" next="createPersonRecordStep">-->
+            <!--<batch:tasklet ref="persistPersonTasklet"/>-->
+        <!--</batch:step>-->
+        <!--<batch:step id="createPersonRecordStep" next="postRecordCreatedSplit">-->
+            <!--<batch:tasklet ref="createPersonRecordTasklet"/>-->
+        <!--</batch:step>-->
+        <!--<batch:split id="postRecordCreatedSplit" task-executor="asyncTaskExecutor">-->
+            <!--<batch:flow>-->
+                <!--<batch:step id="updateSuspenseStep">-->
+                    <!--<batch:tasklet ref="updateSuspenseTasklet"/>-->
+                <!--</batch:step>-->
+            <!--</batch:flow>-->
+            <!--<batch:flow>-->
+                <!--<batch:step id="addPersonFlashStep">-->
+                    <!--<batch:tasklet ref="addPersonFlashTasklet"/>-->
+                <!--</batch:step>-->
+            <!--</batch:flow>-->
+        <!--</batch:split>-->
+        <!--<batch:listeners>-->
+            <!--<batch:listener ref="personRecordPromotionListener"/>-->
+        <!--</batch:listeners>-->
+    <!--</batch:job>-->
 
     <!-- Promotes the step context properties to the job context properties -->
     <bean id="personRecordPromotionListener" class="org.springframework.batch.core.listener.ExecutionContextPromotionListener">
